@@ -1,17 +1,19 @@
-def max_common_div(a: int, b: int) -> int:
+if __name__ == "__main__":
 
-    if not (a > 0 and b > 0):
-        return 0
+    def max_common_div(a: int, b: int) -> int:
 
-    while a > 0 and b > 0:
-        if a > b:
-            a = a - b
-        else:
-            b = b - a
+        if not (a > 0 and b > 0):
+            return 0
 
-    return max(a, b)
+        while a > 0 and b > 0:
+            if a > b:
+                a = a - b
+            else:
+                b = b - a
 
-a = int(input('Введите значение для натурального числа "a": '))
-b = int(input('Введите значение для натурального числа "b": '))
+        return max(a, b)
 
-print(max_common_div(a, b))
+    a = int(input('Введите значение для натурального числа "a": '))
+    b = int(input('Введите значение для натурального числа "b": '))
+
+    print(max_common_div(a, b))
