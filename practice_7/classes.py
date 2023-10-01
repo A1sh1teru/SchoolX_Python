@@ -1,93 +1,135 @@
 class Character:
-    name: str
-    strength: int | float
-    agility: int | float
-    intelligence: int | float
-    speed: int | float
-    damage: int | float
-
-    def __init__(
-        self,
-        name,
-        strength,
-        agility,
-        intelligence,
-        speed,
-        damage,
-    ):
-        self.name = name,
-        self.strength = strength,
-        self.agility = agility,
-        self.intelligence = intelligence,
-        self.speed = speed,
-        self.damage = damage,
-
-        print('Character initialized!')
+	def __init__(
+			self,
+			name: str = 'Name',
+			sex: bool = True,
+			isHuman: bool = True,
+			color: str = 'Color',
+	):
+			self.name = name
+			self.sex = sex
+			self.color = color
+			self.isHuman = isHuman
 
 
-    def name(self):
-        print(f'Моё имя: {self.name}')
+	def mainInfo(self):
+			print('Name:', self.name)
+			print('Sex:', self.sex if 'Man' else 'Woman')
+			print('Color:', self.color)
+			print('Human:', self.isHuman if 'Yes' else 'No')
 
-class Pudge(Character):
-    isStink: bool
-
-
-    def hook():
-        print('Пудж хукнул')
-
-    def set_isStink(self, isStink):
-        self.isStink = isStink
-
-
-    def info_stats(self):
-        print('Имя: ', self.name)
-        print('Cила: ', self.strength)
-        print('Ловкость: ', self.agility)
-        print('Интеллект: ', self.intelligence)
-        print('Cкорость: ', self.speed)
-        print('Урон: ', self.damage)
-        print('----------------')
-        print('Cпособность вонять: ', 'да' if self.isStink else 'нет')
+class OptimusPrime(Character):
+	name = 'OptimusPrime'
+	sex = True
+	color = 'red and blue'
+	isHuman = False	
+	gunType = 'gun'
+	transfromationType = 'truck'
 
 
-    def stink(self):
-        print(f'{self.name} завонял!')
+	def mainInfo(self):
+			print('Name:', self.name)
+			print('Sex:', self.sex if 'Man' else 'Woman')
+			print('Color:', self.color)
+			print('Human:', self.isHuman if 'Yes' else 'No')
+			print('Gun type:', self.gunType)
+			print('Transformation type:', self.transfromationType)
 
-class Mercy(Character):
+	def motivate(self):
+		print(f'{self.name} motivates you to be the greatest warrior!')
 
-
-class BirdMan(Character):
-    armor: int | float
-    isFly: bool
-
-
-    def set_armor(self, armor):
-        self.armor = armor
-
-    def set_isFly(self, isFly):
-        self.isFly = isFly
-
-
-    def info_stats(self):
-        print('Имя: ', self.name)
-        print('Cила: ', self.strength)
-        print('Ловкость: ', self.agility)
-        print('Интеллект: ', self.intelligence)
-        print('Cкорость: ', self.speed)
-        print('Урон: ', self.damage)
-        print('----------------')
-        print('Броня: ', self.armor)
-        print('Cпособность летать: ', 'да' if self.isFly else 'нет')
+	def transform(self):
+		print(f'{self.name} transforms in a {self.transfromationType}.')
+	
+	def shoot(self):
+		print(f'{self.name} shoots from his {self.gunType}.')
 
 
-    def fly(self):
-        print(f'{self.name} взлетел(а)!')
+class SpiderMan(Character):
+	name = 'SpiderMan'
+	sex = True
+	color = 'red and blue'
+	isHuman = True
+	hero = 'hero'
 
 
+	def mainInfo(self):
+			print('Name:', self.name)
+			print('Sex:', self.sex if 'Man' else 'Woman')
+			print('Color:', self.color)
+			print('Human:', self.isHuman if 'Yes' else 'No')
+			print('Hero:', self.hero)
 
-class BlueTractor(Character):
+	def usesWeb(self):
+		print(f'{self.name} uses a web to move faster')
 
-class FunkoPop():
-    def __init__(self, ):
+	def helpsPeople(self):
+		print(f'{self.name} helps people cause he is a {self.hero}.')
+	
+	def climbes(self):
+		print(f'{self.name} can climb.')
 
-class Playable():
+
+class Tars(Character):
+	name = 'TARS'
+	sex = True
+	color = 'gray'
+	isHuman = False
+	robot = 'robot'
+
+
+	def mainInfo(self):
+			print('Name:', self.name)
+			print('Sex:', self.sex if 'Man' else 'Woman')
+			print('Color:', self.color)
+			print('Human:', self.isHuman if 'Yes' else 'No')
+			print('Robot:', self.robot)
+
+	def navigatesStarship(self):
+		print(f'{self.name} can navigate a starship')
+
+	def doTasks(self):
+		print(f'{self.name} can do different tasks cause he is a {self.robot}.')
+	
+	def speaks(self):
+		print(f'{self.name} can speak to humans.')
+
+
+class UnstableMixin():
+	def move(self):
+		print('игрушка сдвинулась')
+
+class SinkedMixin():
+	def sink(self):
+		print('игрушка утонула')
+
+class FunkoPopMixin(UnstableMixin, SinkedMixin):
+	pass
+
+
+class FallableMixin():
+	def fall(self):
+		print('игрушка упала')
+
+class AnnoyingMixin():
+	def loud(self):
+		print('игрушка кричит')
+
+class PlayableMixin(FallableMixin, AnnoyingMixin):
+	pass
+
+
+class PlayableOptimusPrime(OptimusPrime,  PlayableMixin):
+	pass
+class FunkoPopOptimusPrime(OptimusPrime, FunkoPopMixin):
+	pass
+
+class PlayableSpiderMan(SpiderMan, PlayableMixin):
+	pass
+class FunkoPopSpiderMan(SpiderMan, FunkoPopMixin):
+	pass
+
+class PlayableTars(Tars,  PlayableMixin):
+	pass
+class FunkoPopTars(Tars, FunkoPopMixin):
+	pass
