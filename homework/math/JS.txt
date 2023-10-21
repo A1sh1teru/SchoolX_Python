@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from 'react';
+import LossPlot from './components/LossPlot';
+import Canvas from './components/Canvas';
+import * as tf from "@tensorflow/tfjs";
+
+let model;
+
+export default () => {
+    const [data, changeData] = useState([]);
+    const [lossHistory, changeLossHistory] = useState([]);
+
+    useEffect(() => {
+        async function initModel() {
+            const input = [[0, 0], [1, 0], [0, 1], [1, 1]];
+            const inputTensor = tf.tensor(input, [input.length, 2]);
+
+            const output = [[0], [1], [1], [1]]
+            const outputTensor = tf.tensor(output, [output.length, 1]);
+
+            const testInput = generateInputs(10);
+            const testInputTensor = tf.tensor(testInput, [testInput.length, 2]);
+
+            model = tf.sequential();
+            model.add(
+            tf.layers.dense({ inputShape:[2], units:1, activation: 'sigmoid'})
+            );
+            model.compile({
+                optimizer: tf.train.adam(0.1),
+                loss: 'meanSquaredError'
+            });
+
+            await model.fit(inputTensor, outputTensor, {
+                epochs: 100,
+                shuffle: true,
+                callbacks: {
+                    onEpochEnd: async (epoch, { loss }) => {
+                        changeLossHistory((prevHistory) => [...prevHistory, {
+                            epoch,
+                            loss
+                        }]);
+
+                        const output = model.predict(testInputTensor)
+                                                       .arraySync();
+                        changeData(() => output.map(([out], i) => ({
+                            out,
+                            x1: testInput[i][0],
+                            x2: testInput[i][1]
+                        })));
+                        await tf.nextFrame();
+                    }
+                }
+            })
+        }
+        initModel();
+    }, []);
+
+    return (
+        <div>
+            <Canvas data={data} squareAmount={10}/>
+            <LossPlot loss={lossHistory}/>
+        </div>
+    );
+}
+
+function generateInputs(squareAmount) {
+    const step = 1 / squareAmount;
+    const input = [];
+    for (let i = 0; i < 1; i += step) {
+        for (let j = 0; j < 1; j += step) {
+            input.push([i, j]);
+        }
+    }
+    return input;
+}
